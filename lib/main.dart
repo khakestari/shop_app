@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
         routes: {
           ProductDetailScreen.routName: (ctx) => ProductDetailScreen(),
         },
+        debugShowCheckedModeBanner: false,
       ),
     );
   }
