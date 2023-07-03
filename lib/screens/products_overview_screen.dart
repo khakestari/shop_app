@@ -18,6 +18,11 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
       appBar: AppBar(
         title: const Text('MyShop'),
         actions: [
+          IconButton(
+            icon: Icon(Icons.shopping_cart),
+            onPressed: () {},
+          ),
+
           PopupMenuButton(
             onSelected: (FilterOptions selectedValue) {
               setState(() {
@@ -30,17 +35,17 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
               // pr int(selectedValue);
             },
             itemBuilder: (_) => [
-              PopupMenuItem(
-                child: Text('Only Favorites'),
+              const PopupMenuItem(
                 value: FilterOptions.favorite,
+                child: Text('Only Favorites'),
               ),
-              PopupMenuItem(
-                child: Text('Show All'),
+              const PopupMenuItem(
                 value: FilterOptions.all,
+                child: Text('Show All'),
               )
             ],
             icon: const Icon(Icons.more_vert),
-          )
+          ),
         ],
       ),
       body: ProductsGrid(_showOnlyFavorites),
