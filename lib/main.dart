@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import './screens/cart_screen.dart';
 import './providers/cart.dart';
 import './screens/products_overview_screen.dart';
 import './screens/product_detail_screen.dart';
@@ -19,17 +20,18 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (ctx) => Cart(),
-        ),
+        ), 
       ],
       child: MaterialApp(
         title: 'MyShop',
         theme: ThemeData(
             fontFamily: 'Lato',
-            colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.purple)
+            colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blueGrey)
                 .copyWith(secondary: Colors.deepOrange)),
         home: ProductsOverviewScreen(),
         routes: {
           ProductDetailScreen.routName: (ctx) => ProductDetailScreen(),
+          CartScreen.routName: (ctx) => CartScreen()
         },
         debugShowCheckedModeBanner: false,
       ),
