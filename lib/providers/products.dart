@@ -71,10 +71,11 @@ class Products with ChangeNotifier {
   //   notifyListeners();
   // }
 
-  void addProduct(Product product) {
+  Future<void> addProduct(Product product) async {
     final url = Uri.https(
         'test-4f7c9-default-rtdb.firebaseio.com', '/products.json');
-    http.post(url,
+    return http
+        .post(url,
             body: jsonEncode({
           'title': product.title,
           'description': product.description,
@@ -90,10 +91,11 @@ class Products with ChangeNotifier {
         description: product.description,
         price: product.price,
         imageUrl: product.imageUrl);
-    _items.add(newProduct);
-    });
+      _items.add(newProduct);
     // _items.insert(0,newProduct); // at the start of the list
-    notifyListeners();
+      notifyListeners();
+    });
+      
   }
 
   void updateProduct(String id, Product newProduct) {
