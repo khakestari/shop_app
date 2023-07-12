@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_final_fields
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 import './product.dart';
 
@@ -12,7 +15,7 @@ class Products with ChangeNotifier {
       description: 'A red shirt - it is pretty red!',
       price: 29.99,
       imageUrl:
-          'https://cdn.pixabay.com/photo/2016/10/02/22/17/red-t-shirt-1710578_1280.jpg',
+          'https://m.media-amazon.com/images/I/51sdIP8NCjL._AC_UY1100_.jpg',
     ),
     Product(
       id: 'p2',
@@ -20,7 +23,7 @@ class Products with ChangeNotifier {
       description: 'A nice pair of trousers.',
       price: 59.99,
       imageUrl:
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Trousers%2C_dress_%28AM_1960.022-8%29.jpg/512px-Trousers%2C_dress_%28AM_1960.022-8%29.jpg',
+          'https://www.jonssonworkwear.com/images/thumbs/0007991_womens-straight-leg-trousers_1024.jpeg',
     ),
     Product(
       id: 'p3',
@@ -28,7 +31,7 @@ class Products with ChangeNotifier {
       description: 'Warm and cozy - exactly what you need for the winter.',
       price: 19.99,
       imageUrl:
-          'https://live.staticflickr.com/4043/4438260868_cc79b3369d_z.jpg',
+          'https://www.cordings.co.uk/eu/media/catalog/product/cache/90cced69a688d3fb8b4ac2887336c7a4/a/c/ac1574_lemon.jpg',
     ),
     Product(
       id: 'p4',
@@ -69,6 +72,16 @@ class Products with ChangeNotifier {
   // }
 
   void addProduct(Product product) {
+    final url = Uri.https(
+        'https://test-4f7c9-default-rtdb.firebaseio.com', '/products.json');
+    http.post(url,
+        body: json.encode({
+          'title': product.title,
+          'description': product.description,
+          'imageUrl': product.imageUrl,
+          'price': product.price,
+          'isFavorite': product.isFavorite
+        }));
     final newProduct = Product(
         id: DateTime.now().toString(),
         title: product.title,
@@ -80,13 +93,18 @@ class Products with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateProduct(String id, Product newproduct) {
+  void updateProduct(String id, Product newProduct) {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
+    print(prodIndex);
     if (prodIndex >= 0) {
-      _items[prodIndex] = newproduct;
+      _items[prodIndex] = newProduct;
       notifyListeners();
     } else {
       print('...');
     }
+  }
+  void deleteProduct(String id) {
+    _items.removeWhere((element) => element.id == id);
+    notifyListeners();
   }
 }

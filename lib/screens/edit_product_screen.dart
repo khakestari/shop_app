@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 
 import '../providers/products.dart';
 import '../providers/product.dart';
-import '../widgets/app_drawer.dart';
 
 class EditProductScreen extends StatefulWidget {
   const EditProductScreen({super.key});
@@ -45,10 +44,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
   @override
   void didChangeDependencies() {
     if (_isInit) {
-      final productId = ModalRoute.of(context)?.settings.arguments as String;
+      final productId = ModalRoute.of(context)!.settings.arguments;
+      print(productId);
       if (productId != null) {
         _editedProduct =
-            Provider.of<Products>(context, listen: false).findById(productId);
+            Provider.of<Products>(context, listen: false)
+            .findById(productId as String);
         _initValues = {
           'title': _editedProduct.title,
           'description': _editedProduct.description,
@@ -61,7 +62,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
     }
     _isInit = false;
     super.didChangeDependencies();
-    
   }
 
   @override
@@ -94,10 +94,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
       return;
     }
     _form.currentState!.save();
-    if (_editedProduct.id != null) {
+    print(_editedProduct.id);
+    print('object');
+    if (_editedProduct.id != '') {
       Provider.of<Products>(context, listen: false)
           .updateProduct(_editedProduct.id, _editedProduct);
     } else {
+      
       Provider.of<Products>(context, listen: false).addProduct(_editedProduct);
     }
     Navigator.of(context).pop();
