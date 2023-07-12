@@ -73,22 +73,25 @@ class Products with ChangeNotifier {
 
   void addProduct(Product product) {
     final url = Uri.https(
-        'https://test-4f7c9-default-rtdb.firebaseio.com', '/products.json');
+        'test-4f7c9-default-rtdb.firebaseio.com', '/products.json');
     http.post(url,
-        body: json.encode({
+            body: jsonEncode({
           'title': product.title,
           'description': product.description,
           'imageUrl': product.imageUrl,
           'price': product.price,
           'isFavorite': product.isFavorite
-        }));
-    final newProduct = Product(
-        id: DateTime.now().toString(),
+            }))
+        .then((response) {
+      print(jsonDecode(response.body));
+      final newProduct = Product(
+          id: jsonDecode(response.body)['name'],
         title: product.title,
         description: product.description,
         price: product.price,
         imageUrl: product.imageUrl);
     _items.add(newProduct);
+    });
     // _items.insert(0,newProduct); // at the start of the list
     notifyListeners();
   }
