@@ -100,12 +100,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
       _isLoading = true;
     });
     print(_editedProduct.id);
-    print('object');
+    // print('object');
     if (_editedProduct.id != '') {
       Provider.of<Products>(context, listen: false)
           .updateProduct(_editedProduct.id, _editedProduct);
       setState(() {
-        _isLoading = true;
+        _isLoading = false;
       });
       Navigator.of(context).pop();
 
@@ -113,9 +113,25 @@ class _EditProductScreenState extends State<EditProductScreen> {
       
       Provider.of<Products>(context, listen: false)
           .addProduct(_editedProduct)
+          .catchError((error) {
+        return showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: const Text('An error occured!'),
+            content: const Text('something went wrong.'),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(ctx).pop();
+                  },
+                  child: const Text('Okay'))
+            ],
+          ),
+        );
+      })
           .then((_) {
         setState(() {
-          _isLoading = true;
+          _isLoading = false;
         });
         Navigator.of(context).pop();
       });
