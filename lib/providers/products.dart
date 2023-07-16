@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_final_fields
 
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -70,6 +71,17 @@ class Products with ChangeNotifier {
   //   _showFavoritesOnly = false;
   //   notifyListeners();
   // }
+
+  Future<void> fetchAndSetProducts() async {
+    final url =
+        Uri.https('test-4f7c9-default-rtdb.firebaseio.com', '/products.json');
+    try {
+      final response = await http.get(url);
+      print(response.body);
+    } catch (error) {
+      throw (error);
+    }
+  }
 
   Future<void> addProduct(Product product) async {
     final url = Uri.https(
