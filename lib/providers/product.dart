@@ -34,8 +34,6 @@ class Product with ChangeNotifier {
     try {
       final response =
           await http.patch(url, body: jsonEncode({'isFavorite': isFavorite}));
-      isFavorite = !isFavorite;
-      notifyListeners();
       if (response.statusCode >= 400) {
         _setFavValue(oldStatus);
       }
