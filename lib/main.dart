@@ -16,7 +16,6 @@ import './providers/products.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -29,29 +28,31 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (ctx) => Cart(),
-        ), 
+        ),
         ChangeNotifierProvider(
           create: (ctx) => Orders(),
         )
       ],
-      child: MaterialApp(
-        title: 'MyShop',
-        theme: ThemeData(
-            fontFamily: 'Lato',
-            colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blueGrey)
-                .copyWith(secondary: Colors.deepOrange)),
-        home: AuthScreen(),
-        routes: {
-          ProductDetailScreen.routName: (ctx) => ProductDetailScreen(),
-          CartScreen.routName: (ctx) => CartScreen(),
-          OrdersScreen.routNAme: (ctx) => OrdersScreen(),
-          UserProductsScreen.routName: (ctx) => UserProductsScreen(),
-          EditProductScreen.routName: (ctx) => EditProductScreen(),
-          AuthScreen.routeName: (ctx) => AuthScreen(),
-        },
-        debugShowCheckedModeBanner: false,
+      child: Consumer<Auth>(
+        builder: (ctx, auth, _) => MaterialApp(
+          title: 'MyShop',
+          theme: ThemeData(
+              fontFamily: 'Lato',
+              colorScheme:
+                  ColorScheme.fromSwatch(primarySwatch: Colors.blueGrey)
+                      .copyWith(secondary: Colors.deepOrange)),
+          home: auth.isAuth ? ProductDetailScreen() : AuthScreen(),
+          routes: {
+            ProductDetailScreen.routName: (ctx) => ProductDetailScreen(),
+            CartScreen.routName: (ctx) => CartScreen(),
+            OrdersScreen.routNAme: (ctx) => OrdersScreen(),
+            UserProductsScreen.routName: (ctx) => UserProductsScreen(),
+            EditProductScreen.routName: (ctx) => EditProductScreen(),
+            AuthScreen.routeName: (ctx) => AuthScreen(),
+          },
+          debugShowCheckedModeBanner: false,
+        ),
       ),
     );
   }
 }
-
