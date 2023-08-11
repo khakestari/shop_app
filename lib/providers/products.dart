@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_final_fields
 
 import 'dart:convert';
- 
+
 import '../models/http_exception.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -45,8 +45,9 @@ class Products with ChangeNotifier {
   ];
 
   // var _showFavoritesOnly = false;
+  final String? authToken;
 
- 
+  Products(this.authToken, this._items);
 
   List<Product> get items {
     // if (_showFavoritesOnly) {
@@ -54,6 +55,7 @@ class Products with ChangeNotifier {
     // }
     return [..._items];
   }
+
   List<Product> get favoriteItems {
     return [..._items].where((item) => item.isFavorite).toList();
   }
@@ -73,8 +75,8 @@ class Products with ChangeNotifier {
   // }
 
   Future<void> fetchAndSetProducts() async {
-    final url =
-        Uri.https('test-4f7c9-default-rtdb.firebaseio.com', '/products.json');
+    final url = Uri.https('test-4f7c9-default-rtdb.firebaseio.com',
+        '/products.json?auth=$authToken');
     try {
       final response = await http.get(url);
       final extractedData = jsonDecode(response.body) as Map<String, dynamic>;
@@ -101,26 +103,25 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    final url = Uri.https(
-        'test-4f7c9-default-rtdb.firebaseio.com', '/products.json');
+    final url =
+        Uri.https('test-4f7c9-default-rtdb.firebaseio.com', '/products.json');
     try {
-      final response = await http
-        .post(url,
-            body: jsonEncode({
-          'title': product.title,
-          'description': product.description,
-          'imageUrl': product.imageUrl,
-          'price': product.price,
-          'isFavorite': product.isFavorite
+      final response = await http.post(url,
+          body: jsonEncode({
+            'title': product.title,
+            'description': product.description,
+            'imageUrl': product.imageUrl,
+            'price': product.price,
+            'isFavorite': product.isFavorite
           }));
       final newProduct = Product(
           id: jsonDecode(response.body)['name'],
-        title: product.title,
-        description: product.description,
-        price: product.price,
-        imageUrl: product.imageUrl);
+          title: product.title,
+          description: product.description,
+          price: product.price,
+          imageUrl: product.imageUrl);
       _items.add(newProduct);
-    // _items.insert(0,newProduct); // at the start of the list
+      // _items.insert(0,newProduct); // at the start of the list
       notifyListeners();
     } catch (error) {
       print(error);
@@ -153,6 +154,7 @@ class Products with ChangeNotifier {
       print('...');
     }
   }
+
   Future<void> deleteProduct(String id) async {
     final url = Uri.https(
         'test-4f7c9-default-rtdb.firebaseio.com', '/products/$id.json');

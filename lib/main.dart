@@ -12,6 +12,7 @@ import './providers/cart.dart';
 // import './screens/products_overview_screen.dart';
 import './screens/product_detail_screen.dart';
 import './providers/products.dart';
+import './screens/products_overview_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -23,8 +24,12 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (ctx) => Auth(),
         ),
-        ChangeNotifierProvider(
-          create: (ctx) => Products(),
+        ChangeNotifierProxyProvider<Auth, Products>(
+          update: (ctx, auth, previousProducts) => Products(
+            auth.token!,
+            previousProducts == null ? [] : previousProducts.items,
+          ),
+          create: (_) => Products(null, []),
         ),
         ChangeNotifierProvider(
           create: (ctx) => Cart(),
@@ -41,7 +46,7 @@ class MyApp extends StatelessWidget {
               colorScheme:
                   ColorScheme.fromSwatch(primarySwatch: Colors.blueGrey)
                       .copyWith(secondary: Colors.deepOrange)),
-          home: auth.isAuth ? ProductDetailScreen() : AuthScreen(),
+          home: auth.isAuth ? ProductsOverviewScreen() : AuthScreen(),
           routes: {
             ProductDetailScreen.routName: (ctx) => ProductDetailScreen(),
             CartScreen.routName: (ctx) => CartScreen(),

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -36,13 +35,13 @@ class ProductDetailScreen extends StatelessWidget {
             ),
             Text(
               '\$${loadedProduct.price}',
-              style: TextStyle(color: Colors.grey, fontSize: 20),
+              style: const TextStyle(color: Colors.grey, fontSize: 20),
             ),
             const SizedBox(
               height: 10,
             ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               width: double.infinity,
               child: Text(
                 loadedProduct.description,
