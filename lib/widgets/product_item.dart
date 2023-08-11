@@ -1,13 +1,11 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
-
+import '../providers/auth.dart';
 import '../providers/cart.dart';
 import '../screens/product_detail_screen.dart';
 import '../providers/product.dart';
+
 class ProductItem extends StatelessWidget {
   // final String id;
   // final String title;
@@ -17,9 +15,11 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final product = Provider.of<Product>(context, listen: false);
     final cart = Provider.of<Cart>(context, listen: false);
+
+    final authData = Provider.of<Auth>(context, listen: false);
+
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: GridTile(
@@ -27,12 +27,13 @@ class ProductItem extends StatelessWidget {
             backgroundColor: Colors.black87,
             leading: Consumer<Product>(
               builder: (context, product, child) => IconButton(
-              icon: Icon(
-                  product.isFavorite ? Icons.favorite : Icons.favorite_border),
-              onPressed: () {
-                  product.toggleFavoriteStatus();
-              },
-              color: Theme.of(context).colorScheme.secondary,
+                icon: Icon(product.isFavorite
+                    ? Icons.favorite
+                    : Icons.favorite_border),
+                onPressed: () {
+                  product.toggleFavoriteStatus(authData.token!);
+                },
+                color: Theme.of(context).colorScheme.secondary,
               ),
             ),
             trailing: IconButton(
@@ -50,7 +51,7 @@ class ProductItem extends StatelessWidget {
                       onPressed: () {
                         cart.removeSingleItem(product.id);
                       }),
-                )); 
+                ));
               },
               icon: Icon(
                 Icons.shopping_cart,
@@ -69,7 +70,6 @@ class ProductItem extends StatelessWidget {
           ),
         ),
       ),
-      
     );
   }
 }
