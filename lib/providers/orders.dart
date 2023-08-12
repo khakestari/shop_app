@@ -34,6 +34,7 @@ class Orders with ChangeNotifier {
     // print(response.body);
     final List<OrderItem> loadedOrders = [];
     final extractedData = jsonDecode(response.body) as Map<String, dynamic>;
+    // ignore: unnecessary_null_comparison
     if (extractedData == null) {
       return;
     }

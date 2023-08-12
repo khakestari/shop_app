@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_final_fields
+// ignore_for_file: prefer_final_fields, unnecessary_null_comparison
 
 import 'dart:convert';
 
@@ -46,8 +46,9 @@ class Products with ChangeNotifier {
 
   // var _showFavoritesOnly = false;
   final String? authToken;
+  final String? userId;
 
-  Products(this.authToken, this._items);
+  Products(this.authToken, this.userId, this._items);
 
   List<Product> get items {
     // if (_showFavoritesOnly) {
@@ -75,7 +76,7 @@ class Products with ChangeNotifier {
   // }
 
   Future<void> fetchAndSetProducts() async {
-    final url = Uri.https('test-4f7c9-default-rtdb.firebaseio.com',
+    var url = Uri.https('test-4f7c9-default-rtdb.firebaseio.com',
         '/products.json?auth=$authToken');
     try {
       final response = await http.get(url);
@@ -84,15 +85,23 @@ class Products with ChangeNotifier {
       if (extractedData == null) {
         return;
       }
+      url = Uri.https(
+          'test-4f7c9-default-rtdb.firebaseio.com/userFavorites/$userId.json?auth=$authToken');
+      final favoriteResponce = await http.get(url);
+      final favoriteData = jsonDecode(favoriteResponce.body);
       extractedData.forEach(
         (prodId, prodData) {
-          loadedProducts.add(Product(
+          loadedProducts.add(
+            Product(
               id: prodId,
               title: prodData['title'],
               description: prodData['description'],
               price: prodData['price'],
               imageUrl: prodData['imageUrl'],
-              isFavorite: prodData['isFavorite']));
+              isFavorite:
+                  favoriteData == null ? false : favoriteData[prodId] ?? false,
+            ),
+          );
         },
       );
       _items = loadedProducts;
@@ -124,7 +133,7 @@ class Products with ChangeNotifier {
       // _items.insert(0,newProduct); // at the start of the list
       notifyListeners();
     } catch (error) {
-      print(error);
+      // print(error);
       throw error;
     }
     //   .then((response) {

@@ -18,15 +18,14 @@ class _OrderItemState extends State<OrderItem> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.all(10),
+      margin: const EdgeInsets.all(10),
       child: Column(
         children: [
           ListTile(
             title: Text('\$${widget.order.amount}'),
             subtitle:
                 Text(DateFormat('dd-MM-yyyy').format(widget.order.dateTime)),
-            trailing:
-                IconButton(
+            trailing: IconButton(
                 onPressed: () {
                   setState(() {
                     _expanded = !_expanded;
@@ -36,7 +35,7 @@ class _OrderItemState extends State<OrderItem> {
           ),
           if (_expanded)
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
               height: min(widget.order.products.length * 20.0 + 10, 100),
               child: ListView(
                   children: widget.order.products
@@ -50,8 +49,8 @@ class _OrderItemState extends State<OrderItem> {
                               ),
                               Text(
                                 '${prod.quantity}x \$${prod.price}',
-                                style:
-                                    TextStyle(color: Colors.grey, fontSize: 18),
+                                style: const TextStyle(
+                                    color: Colors.grey, fontSize: 18),
                               )
                             ],
                           ))

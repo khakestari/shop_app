@@ -26,8 +26,8 @@ class AuthScreen extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  const Color.fromRGBO(215, 117, 255, 1).withOpacity(0.5),
-                  const Color.fromRGBO(255, 188, 117, 1).withOpacity(0.9),
+                  const Color.fromARGB(255, 86, 44, 223).withOpacity(0.5),
+                  const Color.fromARGB(255, 225, 255, 117).withOpacity(0.9),
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -257,12 +257,14 @@ class _AuthCardState extends State<AuthCard> {
                           horizontal: 30.0, vertical: 8.0),
                       backgroundColor: Theme.of(context).primaryColor,
                       textStyle: TextStyle(
-                          color:
-                              Theme.of(context).primaryTextTheme.button?.color),
+                          color: Theme.of(context)
+                              .primaryTextTheme
+                              .labelLarge
+                              ?.color),
                     ),
                     child: Text(
                       _authMode == AuthMode.Login ? 'LOGIN' : 'SIGN UP',
-                      style: TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.white),
                     ),
                   ),
                 TextButton(
