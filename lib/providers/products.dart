@@ -75,9 +75,11 @@ class Products with ChangeNotifier {
   //   notifyListeners();
   // }
 
-  Future<void> fetchAndSetProducts() async {
-    var url = Uri.https('test-4f7c9-default-rtdb.firebaseio.com',
-        '/products.json?auth=$authToken');
+  Future<void> fetchAndSetProducts([bool filterByUser = false]) async {
+    final filterString =
+        filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
+    var url = Uri.https("test-4f7c9-default-rtdb.firebaseio.com",
+        '''/products.json?auth=$authToken&$filterString''');
     try {
       final response = await http.get(url);
       final extractedData = jsonDecode(response.body) as Map<String, dynamic>;
@@ -121,7 +123,8 @@ class Products with ChangeNotifier {
             'description': product.description,
             'imageUrl': product.imageUrl,
             'price': product.price,
-            'isFavorite': product.isFavorite
+            'isFavorite': product.isFavorite,
+            'createId': userId,
           }));
       final newProduct = Product(
           id: jsonDecode(response.body)['name'],
