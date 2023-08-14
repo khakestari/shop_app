@@ -63,8 +63,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                 Navigator.of(context).pushNamed(CartScreen.routName);
               },
             ),
-          ),  
-          
+          ),
           PopupMenuButton(
             onSelected: (FilterOptions selectedValue) {
               setState(() {
@@ -89,7 +88,6 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
             icon: const Icon(Icons.more_vert),
           ),
         ],
-        
       ),
       drawer: AppDrawer(),
       body: _isLoading
@@ -100,4 +98,3 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
     );
   }
 }
-
