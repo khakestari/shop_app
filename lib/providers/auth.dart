@@ -33,8 +33,13 @@ class Auth with ChangeNotifier {
 
   Future<void> _authenticate(
       String email, String password, String urlSegment) async {
-    var url = Uri.parse(
-        'https://identitytoolkit.googleapis.com/v1/accounts:$urlSegment?key=AIzaSyB6K3ELFo8y3KxV9xYG3rxiVocvHQ7mYiQ');
+    // var url = Uri.parse(
+    // 'https://identitytoolkit.googleapis.com/v1/accounts:$urlSegment?key=AIzaSyB6K3ELFo8y3KxV9xYG3rxiVocvHQ7mYiQ');
+    var url = Uri.https(
+      'identitytoolkit.googleapis.com',
+      '/v1/accounts:$urlSegment',
+      {'key': 'AIzaSyB6K3ELFo8y3KxV9xYG3rxiVocvHQ7mYiQ'},
+    );
     try {
       final response = await http.post(
         url,
@@ -62,7 +67,7 @@ class Auth with ChangeNotifier {
       final userData = jsonEncode({
         'token': _token,
         'userId': userId,
-        'expiryDate': _expiryDate.toString(),
+        'expiryDate': _expiryDate!.toIso8601String(),
       });
       prefs.setString('userData', userData);
     } catch (error) {

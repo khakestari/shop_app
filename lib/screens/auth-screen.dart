@@ -108,9 +108,7 @@ class _AuthCardState extends State<AuthCard>
   final _passwordController = TextEditingController();
 
   AnimationController? _controller;
-
   Animation<Offset>? _slideAnimation;
-
   Animation<double>? _opacityAniamtion;
 
   @override
@@ -133,7 +131,7 @@ class _AuthCardState extends State<AuthCard>
         curve: Curves.easeIn,
       ),
     );
-    _heightAnimation!.addListener(() => setState(() {}));
+    // _heightAnimation!.addListener(() => setState(() {}));
   }
 
   @override
@@ -179,7 +177,6 @@ class _AuthCardState extends State<AuthCard>
         await Provider.of<Auth>(context, listen: false)
             .signup(_authData['email']!, _authData['password']!);
       }
-      Navigator.of(context).pushReplacementNamed('/products-overview');
     } on HttpException catch (error) {
       var errorMessage = 'Authentication failed';
       if (error.toString().contains('EMAIL_EXISTS')) {
